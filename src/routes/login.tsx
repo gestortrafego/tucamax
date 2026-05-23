@@ -1,6 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Bird, Mail, Lock, ArrowRight, Sparkles, Zap, ShieldCheck } from "lucide-react";
 import { useState } from "react";
+import mascot from "@/assets/tucamax-mascot.png";
+
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
