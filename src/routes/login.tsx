@@ -73,12 +73,11 @@ function LoginPage() {
       {/* Right — form */}
       <div className="flex items-center justify-center p-8 lg:p-12">
         <div className="w-full max-w-md">
-          <div className="lg:hidden flex items-center gap-2 mb-8">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl gradient-brand">
-              <Bird className="h-5 w-5 text-primary-foreground" strokeWidth={2.5} />
-            </div>
+          <div className="lg:hidden flex items-center gap-3 mb-8">
+            <img src={mascot} alt="Mascote Tucamax" className="h-12 w-12 object-contain drop-shadow-[0_4px_12px_rgba(245,140,50,0.5)]" />
             <span className="font-display text-xl font-bold">Tucamax</span>
           </div>
+
 
           <h2 className="font-display text-3xl font-bold">Bem-vindo de volta</h2>
           <p className="mt-2 text-sm text-muted-foreground">
