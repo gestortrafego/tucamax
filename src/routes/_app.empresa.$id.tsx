@@ -72,10 +72,10 @@ function EmpresaPage() {
 
           <Section title="Sócios e administradores">
             <div className="space-y-2">
-              {e.socios?.map((s, i) => (
+              {e.socios?.map((s: string, i: number) => (
                 <div key={i} className="flex items-center gap-3 rounded-lg bg-secondary/40 p-3">
                   <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/20 text-primary text-xs font-bold">
-                    {s.split(" ").map((n) => n[0]).join("").slice(0, 2)}
+                    {s.split(" ").map((n: string) => n[0]).join("").slice(0, 2)}
                   </div>
                   <div>
                     <div className="text-sm font-medium">{s}</div>
