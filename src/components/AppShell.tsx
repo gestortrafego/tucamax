@@ -1,9 +1,11 @@
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import {
-  LayoutDashboard, Search, FolderKanban, Sparkles, Settings, Bird,
+  LayoutDashboard, Search, FolderKanban, Sparkles, Settings,
   Bell, CreditCard, LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import mascot from "@/assets/tucamax-mascot.png";
+
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
