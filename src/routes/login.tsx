@@ -1,6 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Bird, Mail, Lock, ArrowRight, Sparkles, Zap, ShieldCheck } from "lucide-react";
+import { Mail, Lock, ArrowRight, Sparkles, Zap, ShieldCheck } from "lucide-react";
 import { useState } from "react";
+import mascot from "@/assets/tucamax-mascot.png";
+
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -20,15 +22,21 @@ function LoginPage() {
           <div className="absolute bottom-0 right-0 h-[50%] w-[60%] rounded-full bg-accent/15 blur-[120px]" />
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl gradient-brand shadow-xl shadow-primary/30">
-            <Bird className="h-6 w-6 text-primary-foreground" strokeWidth={2.5} />
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <div className="absolute inset-0 rounded-full bg-primary/40 blur-2xl" />
+            <img
+              src={mascot}
+              alt="Mascote Tucamax"
+              className="relative h-16 w-16 object-contain drop-shadow-[0_8px_24px_rgba(245,140,50,0.55)]"
+            />
           </div>
           <div>
-            <div className="font-display text-2xl font-bold">Tucamax</div>
+            <div className="font-display text-2xl font-bold leading-tight">Tucamax</div>
             <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">B2B Intelligence</div>
           </div>
         </div>
+
 
         <div className="max-w-lg">
           <div className="inline-flex items-center gap-2 rounded-full glass px-3 py-1 text-xs font-medium text-accent mb-6">
@@ -65,12 +73,11 @@ function LoginPage() {
       {/* Right — form */}
       <div className="flex items-center justify-center p-8 lg:p-12">
         <div className="w-full max-w-md">
-          <div className="lg:hidden flex items-center gap-2 mb-8">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl gradient-brand">
-              <Bird className="h-5 w-5 text-primary-foreground" strokeWidth={2.5} />
-            </div>
+          <div className="lg:hidden flex items-center gap-3 mb-8">
+            <img src={mascot} alt="Mascote Tucamax" className="h-12 w-12 object-contain drop-shadow-[0_4px_12px_rgba(245,140,50,0.5)]" />
             <span className="font-display text-xl font-bold">Tucamax</span>
           </div>
+
 
           <h2 className="font-display text-3xl font-bold">Bem-vindo de volta</h2>
           <p className="mt-2 text-sm text-muted-foreground">

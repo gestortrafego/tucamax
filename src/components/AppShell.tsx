@@ -1,9 +1,11 @@
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import {
-  LayoutDashboard, Search, FolderKanban, Sparkles, Settings, Bird,
+  LayoutDashboard, Search, FolderKanban, Sparkles, Settings,
   Bell, CreditCard, LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import mascot from "@/assets/tucamax-mascot.png";
+
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -20,15 +22,21 @@ export function AppShell() {
     <div className="flex min-h-screen w-full">
       {/* Sidebar */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-sidebar-border bg-sidebar/80 backdrop-blur-xl lg:flex">
-        <div className="flex h-16 items-center gap-2.5 px-6 border-b border-sidebar-border">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl gradient-brand shadow-lg shadow-primary/30">
-            <Bird className="h-5 w-5 text-primary-foreground" strokeWidth={2.5} />
+        <div className="flex h-16 items-center gap-3 px-5 border-b border-sidebar-border">
+          <div className="relative">
+            <div className="absolute inset-0 rounded-full bg-primary/30 blur-xl" />
+            <img
+              src={mascot}
+              alt="Mascote Tucamax"
+              className="relative h-11 w-11 object-contain drop-shadow-[0_4px_12px_rgba(245,140,50,0.45)]"
+            />
           </div>
           <div>
             <div className="font-display text-lg font-bold leading-none">Tucamax</div>
             <div className="text-[10px] uppercase tracking-widest text-muted-foreground mt-0.5">B2B Intelligence</div>
           </div>
         </div>
+
 
         <nav className="flex-1 space-y-1 p-3">
           {nav.map(({ to, label, icon: Icon }) => {
