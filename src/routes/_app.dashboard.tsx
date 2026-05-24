@@ -1,40 +1,76 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Building2, Bookmark, FolderKanban, Coins, Sparkles, TrendingUp, ArrowUpRight, Search } from "lucide-react";
-import { metricas, atividadeSemana, empresas, projetos } from "@/lib/mock-data";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { atividadeSemana } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/_app/dashboard")({
   component: Dashboard,
 });
 
-const cards = [
-  { icon: Building2, label: "Empresas encontradas", value: metricas.empresasEncontradas.toLocaleString("pt-BR"), delta: "+12,4%", accent: "from-primary/30 to-primary/0" },
-  { icon: Bookmark, label: "Leads salvos", value: metricas.leadsSalvos.toLocaleString("pt-BR"), delta: "+8 hoje", accent: "from-accent/30 to-accent/0" },
-  { icon: FolderKanban, label: "Projetos ativos", value: String(metricas.projetosAtivos), delta: "Atualizado hoje", accent: "from-chart-3/30 to-chart-3/0" },
-  { icon: Coins, label: "Créditos utilizados", value: metricas.creditosUtilizados.toLocaleString("pt-BR"), delta: `de ${metricas.creditosTotal.toLocaleString("pt-BR")}`, accent: "from-chart-4/30 to-chart-4/0" },
-  { icon: Sparkles, label: "Empresas abertas hoje", value: metricas.empresasAbertasHoje.toLocaleString("pt-BR"), delta: "+18% vs ontem", accent: "from-chart-5/30 to-chart-5/0" },
-];
+type Empresa = { id: string; nome_fantasia: string | null; razao_social: string; cnpj: string; cidade: string | null; estado: string | null; segmento: string | null; situacao: string | null };
+type Projeto = { id: string; name: string; status: string; created_at: string };
 
 function Dashboard() {
-  const recentes = empresas.slice(0, 5);
+  const { user } = useAuth();
+  const [empresasCount, setEmpresasCount] = useState(0);
+  const [leadsCount, setLeadsCount] = useState(0);
+  const [projetosCount, setProjetosCount] = useState(0);
+  const [credUsed, setCredUsed] = useState(0);
+  const [credTotal, setCredTotal] = useState(10000);
+  const [recentes, setRecentes] = useState<Empresa[]>([]);
+  const [projetos, setProjetos] = useState<Projeto[]>([]);
+  const [nome, setNome] = useState("");
+
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const [{ count: ec }, { count: lc }, { count: pc }, { data: prof }, { data: emp }, { data: prj }] = await Promise.all([
+        supabase.from("companies").select("*", { count: "exact", head: true }),
+        supabase.from("project_companies").select("*", { count: "exact", head: true }),
+        supabase.from("projects").select("*", { count: "exact", head: true }).eq("status", "ativo"),
+        supabase.from("profiles").select("full_name, credits_total, credits_used").eq("id", user.id).maybeSingle(),
+        supabase.from("companies").select("id, nome_fantasia, razao_social, cnpj, cidade, estado, segmento, situacao").order("created_at", { ascending: false }).limit(5),
+        supabase.from("projects").select("id, name, status, created_at").eq("status", "ativo").order("created_at", { ascending: false }).limit(4),
+      ]);
+      setEmpresasCount(ec ?? 0);
+      setLeadsCount(lc ?? 0);
+      setProjetosCount(pc ?? 0);
+      if (prof) {
+        setCredUsed(prof.credits_used);
+        setCredTotal(prof.credits_total);
+        setNome(prof.full_name || "");
+      }
+      setRecentes((emp ?? []) as Empresa[]);
+      setProjetos((prj ?? []) as Projeto[]);
+    })();
+  }, [user]);
+
+  const cards = [
+    { icon: Building2, label: "Empresas encontradas", value: empresasCount.toLocaleString("pt-BR"), delta: "Base oficial", accent: "from-primary/30 to-primary/0" },
+    { icon: Bookmark, label: "Leads salvos", value: leadsCount.toLocaleString("pt-BR"), delta: "Em projetos", accent: "from-accent/30 to-accent/0" },
+    { icon: FolderKanban, label: "Projetos ativos", value: String(projetosCount), delta: "Atualizado agora", accent: "from-chart-3/30 to-chart-3/0" },
+    { icon: Coins, label: "Créditos utilizados", value: credUsed.toLocaleString("pt-BR"), delta: `de ${credTotal.toLocaleString("pt-BR")}`, accent: "from-chart-4/30 to-chart-4/0" },
+    { icon: Sparkles, label: "Empresas abertas hoje", value: "—", delta: "Em breve", accent: "from-chart-5/30 to-chart-5/0" },
+  ];
+
   const maxBuscas = Math.max(...atividadeSemana.map((d) => d.buscas));
+  const firstName = nome.split(" ")[0] || user?.email?.split("@")[0] || "";
 
   return (
     <div className="space-y-8">
-      {/* Hero */}
       <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
         <div>
           <div className="text-xs font-medium uppercase tracking-widest text-primary">Visão geral</div>
-          <h1 className="font-display text-3xl font-bold mt-1">Bom dia, Rafael 👋</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Aqui está o resumo da sua operação comercial hoje.
-          </p>
+          <h1 className="font-display text-3xl font-bold mt-1">Bom dia{firstName ? `, ${firstName}` : ""} 👋</h1>
+          <p className="text-sm text-muted-foreground mt-1">Aqui está o resumo da sua operação comercial hoje.</p>
         </div>
         <Link to="/pesquisa" className="inline-flex items-center gap-2 rounded-lg gradient-brand px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20">
           <Search className="h-4 w-4" /> Nova pesquisa
         </Link>
       </div>
 
-      {/* Metric cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {cards.map(({ icon: Icon, label, value, delta, accent }) => (
           <div key={label} className="relative overflow-hidden rounded-2xl glass p-5">
@@ -50,7 +86,6 @@ function Dashboard() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Activity chart */}
         <div className="lg:col-span-2 rounded-2xl glass p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -75,7 +110,6 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* Projects */}
         <div className="rounded-2xl glass p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-lg font-semibold">Projetos recentes</h2>
@@ -84,25 +118,25 @@ function Dashboard() {
             </Link>
           </div>
           <div className="space-y-3">
-            {projetos.filter(p => !p.arquivado).map((p) => (
-              <div key={p.id} className="flex items-center justify-between rounded-lg p-3 hover:bg-secondary/50 transition cursor-pointer">
+            {projetos.length === 0 && <div className="text-xs text-muted-foreground">Nenhum projeto ainda. Crie o primeiro na aba Projetos.</div>}
+            {projetos.map((p) => (
+              <Link key={p.id} to="/projetos" className="flex items-center justify-between rounded-lg p-3 hover:bg-secondary/50 transition cursor-pointer">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className={`h-9 w-9 rounded-lg flex items-center justify-center text-xs font-bold ${p.cor === "orange" ? "bg-primary/20 text-primary" : p.cor === "yellow" ? "bg-accent/20 text-accent" : "bg-chart-3/20 text-chart-3"}`}>
-                    {p.nome.slice(0, 2).toUpperCase()}
+                  <div className="h-9 w-9 rounded-lg flex items-center justify-center text-xs font-bold bg-primary/20 text-primary">
+                    {p.name.slice(0, 2).toUpperCase()}
                   </div>
                   <div className="min-w-0">
-                    <div className="truncate text-sm font-medium">{p.nome}</div>
-                    <div className="text-xs text-muted-foreground">{p.leads} leads</div>
+                    <div className="truncate text-sm font-medium">{p.name}</div>
+                    <div className="text-xs text-muted-foreground">{new Date(p.created_at).toLocaleDateString("pt-BR")}</div>
                   </div>
                 </div>
                 <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
-              </div>
+              </Link>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Recent companies */}
       <div className="rounded-2xl glass p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
@@ -125,9 +159,7 @@ function Dashboard() {
             <tbody>
               {recentes.map((e) => (
                 <tr key={e.id} className="border-b border-border/40 hover:bg-secondary/30 transition">
-                  <td className="px-2 py-3">
-                    <Link to="/empresa/$id" params={{ id: e.id }} className="font-medium hover:text-primary">{e.nomeFantasia}</Link>
-                  </td>
+                  <td className="px-2 py-3 font-medium">{e.nome_fantasia || e.razao_social}</td>
                   <td className="px-2 py-3 font-mono text-xs text-muted-foreground">{e.cnpj}</td>
                   <td className="px-2 py-3 text-muted-foreground">{e.cidade}/{e.estado}</td>
                   <td className="px-2 py-3"><span className="rounded-md bg-secondary px-2 py-0.5 text-xs">{e.segmento}</span></td>
