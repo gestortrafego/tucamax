@@ -14,7 +14,150 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      companies: {
+        Row: {
+          cidade: string | null
+          cnae: string | null
+          cnpj: string
+          created_at: string
+          data_abertura: string | null
+          email: string | null
+          estado: string | null
+          id: string
+          nome_fantasia: string | null
+          porte: string | null
+          razao_social: string
+          segmento: string | null
+          site: string | null
+          situacao: string | null
+          telefone: string | null
+        }
+        Insert: {
+          cidade?: string | null
+          cnae?: string | null
+          cnpj: string
+          created_at?: string
+          data_abertura?: string | null
+          email?: string | null
+          estado?: string | null
+          id?: string
+          nome_fantasia?: string | null
+          porte?: string | null
+          razao_social: string
+          segmento?: string | null
+          site?: string | null
+          situacao?: string | null
+          telefone?: string | null
+        }
+        Update: {
+          cidade?: string | null
+          cnae?: string | null
+          cnpj?: string
+          created_at?: string
+          data_abertura?: string | null
+          email?: string | null
+          estado?: string | null
+          id?: string
+          nome_fantasia?: string | null
+          porte?: string | null
+          razao_social?: string
+          segmento?: string | null
+          site?: string | null
+          situacao?: string | null
+          telefone?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          company_name: string | null
+          created_at: string
+          credits_total: number
+          credits_used: number
+          full_name: string | null
+          id: string
+          plan_name: string
+        }
+        Insert: {
+          company_name?: string | null
+          created_at?: string
+          credits_total?: number
+          credits_used?: number
+          full_name?: string | null
+          id: string
+          plan_name?: string
+        }
+        Update: {
+          company_name?: string | null
+          created_at?: string
+          credits_total?: number
+          credits_used?: number
+          full_name?: string | null
+          id?: string
+          plan_name?: string
+        }
+        Relationships: []
+      }
+      project_companies: {
+        Row: {
+          company_id: string
+          created_at: string
+          id: string
+          project_id: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          id?: string
+          project_id: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          id?: string
+          project_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_companies_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_companies_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      projects: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
