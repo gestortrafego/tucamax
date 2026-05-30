@@ -14,7 +14,11 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppProjetosRouteImport } from './routes/_app.projetos'
 import { Route as AppPesquisaRouteImport } from './routes/_app.pesquisa'
+import { Route as AppIntegracoesRouteImport } from './routes/_app.integracoes'
+import { Route as AppExportacoesRouteImport } from './routes/_app.exportacoes'
 import { Route as AppEnriquecimentoRouteImport } from './routes/_app.enriquecimento'
+import { Route as AppEmpresasRouteImport } from './routes/_app.empresas'
+import { Route as AppDecisoresRouteImport } from './routes/_app.decisores'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
 import { Route as AppConfiguracoesRouteImport } from './routes/_app.configuracoes'
 import { Route as AppEmpresaIdRouteImport } from './routes/_app.empresa.$id'
@@ -43,9 +47,29 @@ const AppPesquisaRoute = AppPesquisaRouteImport.update({
   path: '/pesquisa',
   getParentRoute: () => AppRoute,
 } as any)
+const AppIntegracoesRoute = AppIntegracoesRouteImport.update({
+  id: '/integracoes',
+  path: '/integracoes',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppExportacoesRoute = AppExportacoesRouteImport.update({
+  id: '/exportacoes',
+  path: '/exportacoes',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppEnriquecimentoRoute = AppEnriquecimentoRouteImport.update({
   id: '/enriquecimento',
   path: '/enriquecimento',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppEmpresasRoute = AppEmpresasRouteImport.update({
+  id: '/empresas',
+  path: '/empresas',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDecisoresRoute = AppDecisoresRouteImport.update({
+  id: '/decisores',
+  path: '/decisores',
   getParentRoute: () => AppRoute,
 } as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
@@ -69,7 +93,11 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/configuracoes': typeof AppConfiguracoesRoute
   '/dashboard': typeof AppDashboardRoute
+  '/decisores': typeof AppDecisoresRoute
+  '/empresas': typeof AppEmpresasRoute
   '/enriquecimento': typeof AppEnriquecimentoRoute
+  '/exportacoes': typeof AppExportacoesRoute
+  '/integracoes': typeof AppIntegracoesRoute
   '/pesquisa': typeof AppPesquisaRoute
   '/projetos': typeof AppProjetosRoute
   '/empresa/$id': typeof AppEmpresaIdRoute
@@ -79,7 +107,11 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/configuracoes': typeof AppConfiguracoesRoute
   '/dashboard': typeof AppDashboardRoute
+  '/decisores': typeof AppDecisoresRoute
+  '/empresas': typeof AppEmpresasRoute
   '/enriquecimento': typeof AppEnriquecimentoRoute
+  '/exportacoes': typeof AppExportacoesRoute
+  '/integracoes': typeof AppIntegracoesRoute
   '/pesquisa': typeof AppPesquisaRoute
   '/projetos': typeof AppProjetosRoute
   '/empresa/$id': typeof AppEmpresaIdRoute
@@ -91,7 +123,11 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/_app/configuracoes': typeof AppConfiguracoesRoute
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/decisores': typeof AppDecisoresRoute
+  '/_app/empresas': typeof AppEmpresasRoute
   '/_app/enriquecimento': typeof AppEnriquecimentoRoute
+  '/_app/exportacoes': typeof AppExportacoesRoute
+  '/_app/integracoes': typeof AppIntegracoesRoute
   '/_app/pesquisa': typeof AppPesquisaRoute
   '/_app/projetos': typeof AppProjetosRoute
   '/_app/empresa/$id': typeof AppEmpresaIdRoute
@@ -103,7 +139,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/configuracoes'
     | '/dashboard'
+    | '/decisores'
+    | '/empresas'
     | '/enriquecimento'
+    | '/exportacoes'
+    | '/integracoes'
     | '/pesquisa'
     | '/projetos'
     | '/empresa/$id'
@@ -113,7 +153,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/configuracoes'
     | '/dashboard'
+    | '/decisores'
+    | '/empresas'
     | '/enriquecimento'
+    | '/exportacoes'
+    | '/integracoes'
     | '/pesquisa'
     | '/projetos'
     | '/empresa/$id'
@@ -124,7 +168,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/_app/configuracoes'
     | '/_app/dashboard'
+    | '/_app/decisores'
+    | '/_app/empresas'
     | '/_app/enriquecimento'
+    | '/_app/exportacoes'
+    | '/_app/integracoes'
     | '/_app/pesquisa'
     | '/_app/projetos'
     | '/_app/empresa/$id'
@@ -173,11 +221,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPesquisaRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/integracoes': {
+      id: '/_app/integracoes'
+      path: '/integracoes'
+      fullPath: '/integracoes'
+      preLoaderRoute: typeof AppIntegracoesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/exportacoes': {
+      id: '/_app/exportacoes'
+      path: '/exportacoes'
+      fullPath: '/exportacoes'
+      preLoaderRoute: typeof AppExportacoesRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/enriquecimento': {
       id: '/_app/enriquecimento'
       path: '/enriquecimento'
       fullPath: '/enriquecimento'
       preLoaderRoute: typeof AppEnriquecimentoRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/empresas': {
+      id: '/_app/empresas'
+      path: '/empresas'
+      fullPath: '/empresas'
+      preLoaderRoute: typeof AppEmpresasRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/decisores': {
+      id: '/_app/decisores'
+      path: '/decisores'
+      fullPath: '/decisores'
+      preLoaderRoute: typeof AppDecisoresRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/dashboard': {
@@ -207,7 +283,11 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppConfiguracoesRoute: typeof AppConfiguracoesRoute
   AppDashboardRoute: typeof AppDashboardRoute
+  AppDecisoresRoute: typeof AppDecisoresRoute
+  AppEmpresasRoute: typeof AppEmpresasRoute
   AppEnriquecimentoRoute: typeof AppEnriquecimentoRoute
+  AppExportacoesRoute: typeof AppExportacoesRoute
+  AppIntegracoesRoute: typeof AppIntegracoesRoute
   AppPesquisaRoute: typeof AppPesquisaRoute
   AppProjetosRoute: typeof AppProjetosRoute
   AppEmpresaIdRoute: typeof AppEmpresaIdRoute
@@ -216,7 +296,11 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppConfiguracoesRoute: AppConfiguracoesRoute,
   AppDashboardRoute: AppDashboardRoute,
+  AppDecisoresRoute: AppDecisoresRoute,
+  AppEmpresasRoute: AppEmpresasRoute,
   AppEnriquecimentoRoute: AppEnriquecimentoRoute,
+  AppExportacoesRoute: AppExportacoesRoute,
+  AppIntegracoesRoute: AppIntegracoesRoute,
   AppPesquisaRoute: AppPesquisaRoute,
   AppProjetosRoute: AppProjetosRoute,
   AppEmpresaIdRoute: AppEmpresaIdRoute,
@@ -232,13 +316,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
