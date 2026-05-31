@@ -6,6 +6,7 @@ import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import heroBrazil from "@/assets/vmax-hero-brazil.jpg";
+import vmaxLogo from "@/assets/vmax-atlas-logo.png";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -81,27 +82,12 @@ function LoginPage() {
         {/* LEFT — Hero narrative */}
         <div className="relative flex flex-col justify-between p-8 lg:p-14 xl:p-20">
           {/* Brand */}
-          <div className="flex items-center gap-3">
-            <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/30 to-primary/5 ring-1 ring-primary/40">
-              <span className="font-display text-xl font-bold text-primary">V</span>
-              <div className="absolute -inset-1 rounded-xl bg-primary/25 blur-xl -z-10" />
-            </div>
-            <div>
-              <div className="font-display text-xl font-bold leading-none tracking-tight">
-                VMAX <span className="text-gradient-brand">Atlas</span>
-              </div>
-              <div className="text-[10px] uppercase tracking-[0.28em] text-muted-foreground mt-1.5">
-                Inteligência Comercial B2B
-              </div>
-            </div>
+          <div className="flex items-center">
+            <img src={vmaxLogo} alt="VMAX Atlas" className="h-16 w-auto" />
           </div>
 
           {/* Hero copy */}
           <div className="max-w-xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary backdrop-blur-md mb-7 shadow-[0_0_30px_oklch(0.78_0.14_75/0.15)]">
-              <Sparkles className="h-3 w-3" />
-              Nova safra de dados — Maio 2026
-            </div>
             <h1 className="font-display text-5xl xl:text-6xl font-bold leading-[1.02] tracking-tight">
               Inteligência que{" "}
               <span className="text-gradient-brand">conecta.</span>
